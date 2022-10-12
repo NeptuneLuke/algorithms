@@ -17,22 +17,22 @@ public class binarySearch {
 		
 		Scanner keyboard = new Scanner(System.in);
 		
-		int A[] = new int[5];
-		for(int i=0; i<A.length; i++) {
+		int myArray[] = new int[5];
+		for(int i=0; i<myArray.length; i++) {
 			System.out.println("Insert number: ");
-			A[i] = keyboard.nextInt();
+			myArray[i] = keyboard.nextInt();
 		}
 		System.out.println();
 		
 		//binarySearch works only if the array is sorted
-		Arrays.sort(A);
+		Arrays.sort(myArray);
 		
-		System.out.println(Arrays.toString(A));
+		System.out.println(Arrays.toString(myArray));
 		
 		System.out.println("Insert the number to search: ");
 		int k = keyboard.nextInt();
 		
-		boolean found = binarySearch(A,k);
+		boolean found = binarySearch(myArray,k);
 		if(!found)
 			System.out.println("Number not found!");
 		else
@@ -40,15 +40,15 @@ public class binarySearch {
 	}
 
 	
-	public static boolean binarySearch(int A[], int k) {
+	public static boolean binarySearch(int myArray[], int k) {
 		
 		int start = 0;
-		int end = A.length-1;
+		int end = myArray.length-1;
 		int mid = (start+end)/2;
 		
-		while(A[mid] != k && start < end) {
+		while(myArray[mid] != k && start < end) {
 			
-			if(A[mid] > k)
+			if(myArray[mid] > k)
 				end = mid - 1;
 			else
 				start = mid + 1;
@@ -56,14 +56,14 @@ public class binarySearch {
 			mid = (start+end)/2;
 		}
 		
-		if(A[mid] == k)
+		if(myArray[mid] == k)
 			return true;
 		else
 			return false;
 	}
 	
 	
-	public static boolean recursiveBinarySearch(int[] A, int k, int start, int end){
+	public static boolean recursiveBinarySearch(int myArray[], int k, int start, int end){
 		
 		//base case -> array is empty
 		if (start > end)
@@ -72,14 +72,14 @@ public class binarySearch {
 		int mid = (start+end)/2;
 		
 		//final step -> found k
-		if (A[mid] == k)
+		if (myArray[mid] == k)
 			return true;
 		
 		//recursive step -> on the two halves of the array
-		if (A[mid] > k)
-			return recursiveBinarySearch(A,k,start,mid-1);
+		if (myArray[mid] > k)
+			return recursiveBinarySearch(myArray,k,start,mid-1);
 		else
-			return recursiveBinarySearch(A,k,mid+1,end);
+			return recursiveBinarySearch(myArray,k,mid+1,end);
 	}
 	
 	
