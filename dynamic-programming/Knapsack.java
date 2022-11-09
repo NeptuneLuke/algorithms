@@ -1,14 +1,13 @@
 /**
 * @author 	Luca Cortinovis	luca1cortinovis@gmail.com
 * @version 	1.0
-* @since	4/11/2022
+* @since	9/11/2022
 *
 * You can find me here:
 * GitHub	Luca Cortinovis(NeptuneLuke)
 */
 
 
-import java.util.Scanner;
 import java.lang.Math;
 
 public class Knapsack {
@@ -16,11 +15,11 @@ public class Knapsack {
 	
 	public static void main(String args[]) {
 		
-		int values [] = {7,5,10,15,9,8,4};		// values (how many units of that element)
+	int values [] = {7,5,10,15,9,8,4};		// values (how many units of that element)
         int weights [] = {1,1,2,5,3,4,2}; 		// weights (how much each element weights)
-        int W = 15;								// knapsack capacity (in units)
+        int W = 15;					// knapsack capacity
         
-        int M[][]= knapsack(W,weights,values,values.length);
+        int M[][] = knapsack(values.length,W,values,weights);
         
         printKnapsack(values.length,W,M,weights,values);
         
@@ -28,10 +27,10 @@ public class Knapsack {
 	}
 	
 	
-	/* This is the iterative algorithm for the Knapsack problem
+	/* Iterative algorithm for the Knapsack problem
 	 * Time complexity: O(n*W)
 	 * */
-	public static int[][] knapsack(int W, int weights[], int values[], int n) {
+	public static int[][] knapsack(int n, int W, int values[], int weights[]) {
 		
 		int M[][] = new int[n+1][W+1];
 		
@@ -43,7 +42,7 @@ public class Knapsack {
 		for(int w=0; w<=W; w++)
 			M[0][w] = 0;
 		
-		// "recursive step"
+		// "recursive step" (i,j) > 0
 		for(int i=1; i<=n; i++) {
 			for(int j=1; j<=W; j++) {
 				
@@ -58,23 +57,27 @@ public class Knapsack {
 	}
 	
 	
-	// Recursive algorithm to print the solution (with all subproblems)
-	public static void printKnapsack (int i, int j, int M[][], int weights[], int values[]){
+	// Recursive algorithm to print the solution (with all subproblems  (i,c) )
+	public static void printKnapsack (int i, int c, int M[][], int weights[], int values[]){
 		
-		if(i == 0 || j == 0)
+		// i --> object of index i
+		// c --> remaining capacity of the knapsack
+		// M --> matrix of the lengths of all solutions
+		
+		if(i == 0 || c == 0)
 			System.out.println();
 		else {
 			
-			if(weights[i-1] > j)
-				printKnapsack(i-1,j,M,weights,values);
+			if(weights[i-1] > c)
+				printKnapsack(i-1,c,M,weights,values);
 			else {
 				
-				if(M[i-1][j-weights[i-1]] + values[i-1] >= M[i-1][j]) {
-					printKnapsack(i-1,j-weights[i-1],M,weights,values);
+				if(M[i-1][c-weights[i-1]] + values[i-1] >= M[i-1][c]) {
+					printKnapsack(i-1,c-weights[i-1],M,weights,values);
 					System.out.println("Object " + i + "   weight: " + weights[i-1] + "   value: " + values[i-1]);
 				}
 				else
-					printKnapsack(i-1,j,M,weights,values);
+					printKnapsack(i-1,c,M,weights,values);
 			}
 		}
 		
