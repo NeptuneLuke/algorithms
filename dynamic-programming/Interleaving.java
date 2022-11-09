@@ -1,7 +1,7 @@
 /**
 * @author 	Luca Cortinovis	luca1cortinovis@gmail.com
-* @version 	1.0
-* @since	2/11/2022
+* @version	1.0
+* @since	9/11/2022
 *
 * You can find me here:
 * GitHub	Luca Cortinovis(NeptuneLuke)
@@ -26,12 +26,12 @@ public class Interleaving {
 		System.out.println("Insert interleaving sequence: ");
 		String W = keyboard.next();
 		
-		System.out.println("Is " + W + " interleaving of " + X + " " + Y + " ? " + isInterleave(X,Y,W));
+		System.out.println("Is " + W + " interleaving of " + X + " " + Y + " --> " + isInterleave(X,Y,W));
 		
 	}
 	
 	
-	/* This algorithm fills matrix S with the solution of all subproblems Xi,Yj,Wi+j
+	/* Iterative algorithm that fills matrix S with the solutions of all subproblems (Xi,Yj,Wi+j)
 	 * Time complexity: O(m*n) 
 	 */
 	public static boolean isInterleave(String X, String Y, String W) {
@@ -39,7 +39,7 @@ public class Interleaving {
 		int m = X.length();
 		int n = Y.length();
 		
-		boolean S[][] = new boolean[m+1][n+1];	// matrix of solutions of subproblems
+		boolean S[][] = new boolean[m+1][n+1];
 		
 		// by definition if W is interleaving of X,Y
 		// W.length() == X.length() + Y.length()
@@ -52,29 +52,37 @@ public class Interleaving {
 		for(int i=0; i<=m; i++) {
 			for(int j=0; j<=n; j++) {
 		
-			if (i == 0 && j == 0)	// base case --> empty strings
-			   S[i][j] = true;
-			
-			else if (i == 0) {		// X is empty
-			   
-				if (Y.charAt(j-1) == W.charAt(j-1))
-			       S[i][j] = S[i][j-1];
-			}
-			
-			else if (j == 0) {		// Y is empty
-			   
-				if (X.charAt(i-1) == W.charAt(i-1))
-			       S[i][j] = S[i-1][j];
-			}
-			
-			else if (W.charAt(i+j-1) == X.charAt(i-1) && W.charAt(i+j-1) != Y.charAt(j-1))	// W(i+j) == X(i) and W(i+j) != Y(j)
-			   S[i][j] = S[i-1][j];
-			
-			else if ( W.charAt(i+j-1) == Y.charAt(j-1) && W.charAt(i+j-1) != X.charAt(i-1))	// W(i+j) == Y(j) and W(i+j) != X(i)
-			   S[i][j] = S[i][j-1];
-			
-			else if (W.charAt(i+j-1) == X.charAt(i-1) && W.charAt(i+j-1) == Y.charAt(j-1)) // W(i+j) == X(i) == Y(j)
-			   S[i][j] = (S[i-1][j] || S[i][j-1]);
+				if(i == 0 && j == 0)		// base case
+					S[i][j] = true;
+				
+				else if(i == 0 && j > 0) {	// base case
+					
+					if(W.charAt(i+j-1) == Y.charAt(j-1))
+						S[i][j] = S[i][j-1];
+					else
+						S[i][j] = false;
+				}
+				else if(j == 0 && i > 0) {	// base case
+					
+					if(W.charAt(i+j-1) == X.charAt(i-1))
+						S[i][j] = S[i-1][j];
+					else
+						S[i][j] = false;
+				}
+				
+				// "recursive step" (i,j) > 0
+				else {
+					
+					if(W.charAt(i+j-1) != X.charAt(i-1) && W.charAt(i+j-1) != Y.charAt(j-1))		// W(i+j) != X(i) AND W(i+j) != Y(j)
+						S[i][j] = false;
+					else if(W.charAt(i+j-1) == X.charAt(i-1) && W.charAt(i+j-1) != Y.charAt(j-1))	// W(i+j) == X(i) AND W(i+j) != Y(j)
+						S[i][j] = S[i-1][j];
+					else if(W.charAt(i+j-1) != X.charAt(i-1) && W.charAt(i+j-1) == Y.charAt(j-1))	// W(i+j) != X(i) AND W(i+j) == Y(j)
+						S[i][j] = S[i][j-1];
+					else if(W.charAt(i+j-1) == X.charAt(i-1) && W.charAt(i+j-1) == Y.charAt(j-1))	// W(i+j) == X(i) AND W(i+j) == Y(j)
+						S[i][j] = S[i-1][j] || S[i][j-1];
+				}
+					
 			}
 		}
 		
