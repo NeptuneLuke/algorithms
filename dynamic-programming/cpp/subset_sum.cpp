@@ -26,14 +26,14 @@ int main(void) {
     vector<int> set = {3, 34, 4, 12, 5, 2};
     int sum = 9;
 
-    bool sol = subset_sum(set,sum);
+    bool result = subset_sum(set,sum);
     cout << "Can the set ";
     for (auto elem : set) {
         cout << elem << " ";
     }
     cout << " sum up to " << sum << " ? \n\n";
 
-    cout << std::boolalpha << sol;
+    cout << std::boolalpha << result;
 
 
     return 0;
